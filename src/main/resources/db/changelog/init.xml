@@ -1,0 +1,35 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="create-communicationType" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="communication_type"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE communication_type
+            (
+                id    int auto_increment PRIMARY KEY,
+                name  varchar(255) NOT NULL
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-type_of_change" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="type_of_change"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE type_of_change
+            (
+                id    int auto_increment PRIMARY KEY,
+                name  varchar(255) NOT NULL
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
