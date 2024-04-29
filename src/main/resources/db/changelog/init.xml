@@ -65,7 +65,7 @@
                 date date NOT NULL,
                 new_date date,
                 planned bit(1),
-                type_of_change_id NOT NULL
+                type_of_change_id int NOT NULL
             );
         </sql>
     </changeSet>
