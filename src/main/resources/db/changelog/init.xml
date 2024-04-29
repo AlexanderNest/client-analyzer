@@ -32,4 +32,41 @@
             );
         </sql>
     </changeSet>
+    <changeSet id="create-client" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="client"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE client
+            (
+                id    int auto_increment PRIMARY KEY,
+                name  varchar(255) NOT NULL,
+                communication_type_id int,
+                cost_per_hour int NOT NULL,
+                count_of_hours_pr_week float,
+                count_of_meetings_pr_week int,
+                active bit (1)
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="create-schedule_change" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="schedule_change"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE schedule_change
+            (
+                id    int auto_increment PRIMARY KEY,
+                client_id int NOT NULL,
+                date date NOT NULL,
+                new_date date,
+                planned bit(1),
+                type_of_change_id NOT NULL
+            );
+        </sql>
+    </changeSet>
 </databaseChangeLog>

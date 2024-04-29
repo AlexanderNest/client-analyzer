@@ -16,5 +16,40 @@
                                                       ('PHONE');
         </sql>
     </changeSet>
+    <changeSet id="fill_type_of_change" author="Sasha">
+        <preConditions>
+            <tableExists tableName="type_of_change"/>
+        </preConditions>
+        <sql>
+            INSERT INTO type_of_change (name) VALUES
+                                                      ('SHIFTED'),
+                                                      ('CANCELLED');
+        </sql>
+    </changeSet>
+    <changeSet id="fill_client" author="Sasha">
+        <preConditions>
+            <tableExists tableName="client"/>
+        </preConditions>
+        <sql>
+            INSERT INTO client (name, communication_type_id, cost_per_hour, count_of_hours_pr_week, count_of_meetings_pr_week, active) VALUES
+                                                  ('Aleksandra', 3, 2000, 1.5, 1, 1),
+                                                  ('Artem', 2, 2500, 2, 1, 1),
+                                                  ('Daniil', 3, 2000, 3, 3, 1),
+                                                  ('Anna', 1, 2500, 3, 2, 4),
+                                                  ('Valeriy', 1, 2500, 2, 2, 0)
+        </sql>
+    </changeSet>
+    <changeSet id="fill_schedule_change" author="Sasha">
+        <preConditions>
+            <tableExists tableName="schedule_change"/>
+        </preConditions>
+        <sql>
+            INSERT INTO schedule_change (client_id, date, new_date, planned, type_of_change_id) VALUES
+                                                  (1, '2024-04-20', '2024-04-24', 1, 1),
+                                                  (1, '2024-04-27', '2024-04-30', 1, 1),
+                                                  (3, '2024-04-29', NULL, 1, 2)
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
 
