@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "communcation_type")
+@Table(name = "communication_type")
 public class CommunicationType {
     @Id
     int id;
