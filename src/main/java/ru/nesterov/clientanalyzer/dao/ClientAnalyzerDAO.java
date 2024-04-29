@@ -48,12 +48,28 @@ public class ClientAnalyzerDAO {
     public List<Client> getCountOfUnplannedShifts () {
         return jdbcTemplate.query("SELECT client.name, COUNT(schedule_change.id) as unplannedShifts " +
                 "FROM client LEFT JOIN schedule_change ON client.id = schedule_change_id" +
-                "WHERE planned = 0;", clientRowMapper);
+                "INNER INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id" +
+                "WHERE schedule_change.planned = 0 AND type_of_change.name = 'SHIFTED';", clientRowMapper);
     }
 
     public List<Client> getCountOfPlannedShifts () {
         return jdbcTemplate.query("SELECT client.name, COUNT(schedule_change.id) as unplannedShifts " +
                 "FROM client LEFT JOIN schedule_change ON client.id = schedule_change_id" +
-                "WHERE planned = 1;", clientRowMapper);
+                "INNER INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id" +
+                "WHERE schedule_change.planned = 1 AND type_of_change.name = 'SHIFTED';", clientRowMapper);
+    }
+
+    public List<Client> getCountOfUnplannedCancellations () {
+        return jdbcTemplate.query("SELECT client.name, COUNT(schedule_change.id) as unplannedShifts " +
+                "FROM client LEFT JOIN schedule_change ON client.id = schedule_change_id" +
+                "INNER INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id" +
+                "WHERE schedule_change.planned = 0 AND type_of_change.name = 'CANCELLED';", clientRowMapper);
+    }
+
+    public List<Client> getCountOfPlannedCancellations () {
+        return jdbcTemplate.query("SELECT client.name, COUNT(schedule_change.id) as unplannedShifts " +
+                "FROM client LEFT JOIN schedule_change ON client.id = schedule_change_id" +
+                "INNER INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id" +
+                "WHERE schedule_change.planned = 1 AND type_of_change.name = 'CANCELLED';", clientRowMapper);
     }
 }
