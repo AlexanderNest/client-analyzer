@@ -11,6 +11,6 @@ public class ScheduleChange {
     private Date date;
     private Date newDate;
     private boolean planned;
-    private int typerOfChangeId;
+    private TypeOfChange typerOfChange;
 
 }

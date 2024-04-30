@@ -7,10 +7,10 @@ import lombok.Data;
 public class Client {
     private int id;
     private String name;
-    private int communicationTypeId;
     private int costPerHour;
     private float countOfHoursPerWeek;
     private int countOfMeetingsPerWeek;
     private boolean active;
+    private Communication communication;
 }
 
