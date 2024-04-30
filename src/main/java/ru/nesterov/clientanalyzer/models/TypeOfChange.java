@@ -6,10 +6,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "type_of_change")
 public class TypeOfChange {
-    @Id
     int id;
     String name;
 }
