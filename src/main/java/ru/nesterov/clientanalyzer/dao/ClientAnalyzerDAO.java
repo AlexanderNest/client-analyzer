@@ -18,7 +18,7 @@ public class ClientAnalyzerDAO {
         Client client = new Client();
         client.setId(rs.getInt("id"));
         client.setName(rs.getString("name"));
-        client.setCost_per_hour(rs.getInt("cost_per_hour"));
+        client.setCostPer_hour(rs.getInt("cost_per_hour"));
         client.setCommunication_type_id(rs.getInt("communication_type_id"));
         client.setCount_of_hours_pr_week(rs.getInt("count_of_hours_pr_week"));
         client.setCount_of_meetings_pr_week(rs.getInt("count_of_meetings_pr_week"));
