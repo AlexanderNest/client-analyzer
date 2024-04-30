@@ -38,11 +38,11 @@ public class ClientAnalyzerDAO {
     };
 
     public List<Client> getCountOfMeetingsHeld () {
-        return jdbcTemplate.query("SELECT client.name, COUNT (schedule_change.id) as countOfMeetings " +
-                "FROM client LEFT JOIN schedule_change ON client.id = schedule_change.client_id" +
-                "INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id" +
-                "WHERE type_of_change.name <> 'cancelled'" +
-                "GROUP BY client.name;", clientRowMapper);
+        return jdbcTemplate.query("SELECT SUM(client.count_of_meetings_pr_week) as countOfMeetings\n" +
+                "FROM client\n" +
+                "         LEFT JOIN schedule_change ON client.id = schedule_change.client_id\n" +
+                "         INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id\n" +
+                "WHERE type_of_change.name <> 'CANCELLED' and client.active;", clientRowMapper);
     }
 
     public List<Client> getCountOfUnplannedShifts () {
