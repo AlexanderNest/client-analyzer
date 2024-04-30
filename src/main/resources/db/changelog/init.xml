@@ -1,0 +1,86 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="create-communicationType" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="communication_type"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE communication_type
+            (
+                id    int auto_increment PRIMARY KEY,
+                name  varchar(255) NOT NULL
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-type_of_change" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="type_of_change"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE type_of_change
+            (
+                id    int auto_increment PRIMARY KEY,
+                name  varchar(255) NOT NULL
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="create-client" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="client"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE client
+            (
+                id    int auto_increment PRIMARY KEY,
+                name  varchar(255) NOT NULL,
+                cost_per_hour int NOT NULL,
+                count_of_hours_pr_week float,
+                count_of_meetings_pr_week int,
+                active bit (1)
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="create-schedule_change" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="schedule_change"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE schedule_change
+            (
+                id    int auto_increment PRIMARY KEY,
+                client_id int NOT NULL,
+                date date NOT NULL,
+                new_date date,
+                planned bit(1),
+                type_of_change_id int NOT NULL
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="communication" author="Sasha">
+        <preConditions>
+            <not>
+                <tableExists tableName="communication"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE communication
+            (
+                client_id int NOT NULL PRIMARY KEY,
+                communication_type_id int NOT NULL,
+                contact varchar(255) NOT NULL
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

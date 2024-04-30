@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="fill_communication_type" author="Sasha">
+        <preConditions>
+            <tableExists tableName="communication_type"/>
+        </preConditions>
+        <sql>
+            INSERT INTO communication_type (name) VALUES
+                                                      ('SKYPE'),
+                                                      ('TELEGRAM'),
+                                                      ('WHATSAPP'),
+                                                      ('PHONE');
+        </sql>
+    </changeSet>
+    <changeSet id="fill_type_of_change" author="Sasha">
+        <preConditions>
+            <tableExists tableName="type_of_change"/>
+        </preConditions>
+        <sql>
+            INSERT INTO type_of_change (name) VALUES
+                                                      ('SHIFTED'),
+                                                      ('CANCELLED');
+        </sql>
+    </changeSet>
+</databaseChangeLog>
+
