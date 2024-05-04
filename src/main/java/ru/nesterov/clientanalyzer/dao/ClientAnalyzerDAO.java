@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.nesterov.clientanalyzer.models.Client;
-import ru.nesterov.clientanalyzer.models.ScheduleChange;
+import ru.nesterov.clientanalyzer.models.*;
 
 import java.util.List;
 
@@ -18,11 +17,14 @@ public class ClientAnalyzerDAO {
         Client client = new Client();
         client.setId(rs.getInt("id"));
         client.setName(rs.getString("name"));
-        client.setCostPer_hour(rs.getInt("cost_per_hour"));
-        client.setCommunication_type_id(rs.getInt("communication_type_id"));
-        client.setCount_of_hours_pr_week(rs.getInt("count_of_hours_pr_week"));
-        client.setCount_of_meetings_pr_week(rs.getInt("count_of_meetings_pr_week"));
-        client.setActive(rs.getInt("active"));
+        client.setCostPerHour(rs.getInt("cost_per_hour"));
+        client.setCountOfHoursPerWeek((rs.getInt("count_of_hours_pr_week")));
+        client.setCountOfMeetingsPerWeek(rs.getInt("count_of_meetings_pr_week"));
+        client.setActive(rs.getBoolean("active"));
+        Communication communication = new Communication();
+        communication.setContact(rs.getString("contact"));
+        communication.setCommunicationType(CommunicationType.valueOf(rs.getString("communication_type")));
+        client.setCommunication(communication);
         return client;
     };
 
@@ -32,10 +34,14 @@ public class ClientAnalyzerDAO {
         scheduleChange.setClientId(rs.getInt("client_id"));
         scheduleChange.setDate(rs.getDate("date"));
         scheduleChange.setNewDate(rs.getDate("new_date"));
-        scheduleChange.setPlanned(rs.getInt("planned"));
-        scheduleChange.setTyperOfChangeId(rs.getInt("type_of_change_id"));
+        scheduleChange.setPlanned(rs.getBoolean("planned"));
+        scheduleChange.setTyperOfChange(TypeOfChange.valueOf(rs.getString("type_of_change")));
         return scheduleChange;
     };
+
+    public Client getClientById (int id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM client WHERE id = ?", clientRowMapper, id);
+    }
 
     public List<Client> getCountOfMeetingsHeld () {
         return jdbcTemplate.query("SELECT SUM(client.count_of_meetings_pr_week) as countOfMeetings\n" +
