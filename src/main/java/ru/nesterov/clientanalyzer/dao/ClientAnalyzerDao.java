@@ -26,7 +26,7 @@ public class ClientAnalyzerDao {
     }
 
     public int getCountOfSuccessfulMeetings(long clientId) {
-        return jdbcTemplate.queryForObject("SELECT FLOOR(DATEDIFF('DAY', CURRENT_TIMESTAMP, date_of_beginning) / 7) * " +
+        return jdbcTemplate.queryForObject("SELECT FLOOR(timestampdiff(DAY, CURRENT_TIMESTAMP, date_of_beginning) / 7) * " +
                 "count_of_meetings_pr_week AS total_meetings " +
                 "FROM client " +
                 "WHERE client.id  = ?", Integer.class, clientId);
@@ -34,9 +34,9 @@ public class ClientAnalyzerDao {
 
     public int getCountOfSuccessfulMeetings(long clientId, Date dateFrom, Date dateTo) {
 
-        String sqlCountOfTotalMeetings = "SELECT ROUND(TIMESTAMPDIFF(day, :dateFrom, :dateTo) / 7 * count_of_meetings_pr_week)" +
-                "                     FROM client c" +
-                "                      WHERE c.id = :clientId";
+        String sqlCountOfTotalMeetings = "SELECT ROUND(TIMESTAMPDIFF(day, :dateFrom, :dateTo) / 7) * count_of_meetings_pr_week" +
+                "        FROM client c" +
+                "        WHERE c.id = :clientId";
 
         String sqlCountOfUnsuccessfulMeetings = "SELECT count(sc.id) " +
                 "         FROM schedule_change sc " +
@@ -102,24 +102,23 @@ public class ClientAnalyzerDao {
 
 
     public int getExpectedIncoming(long clientId, Date dateFrom, Date dateTo) {
-        return jdbcTemplate.queryForObject("SELECT cost_per_hour * count_of_hours_pr_week * FLOOR(TIMESTAMPDIFF('DAY', ?, ?)) / 7 " +
-                "FROM client WHERE id = ?", ResultSet::getInt, dateTo, dateFrom, clientId);
+        return jdbcTemplate.queryForObject("SELECT cost_per_hour * count_of_hours_pr_week * FLOOR(TIMESTAMPDIFF(DAY, ?, ?) / 7) " +
+                "FROM client WHERE id = ?", Integer.class, dateFrom, dateTo, clientId);
     }
 
     public int getActualIncoming(long clientId, Date dateFrom, Date dateTo) {
-        return jdbcTemplate.queryForObject("SELECT cost_per_hour * count_of_hours_pr_week * FLOOR" +
-                "(TIMESTAMPDIFF('DAY', ?, ?))/7 - count(query.client_id) * cost_per_hour " +
-                "FROM client join schedule_change sc on client.id = sc.client_id, (select client_id from schedule_change inner join type_of_change toc " +
-                "    on type_of_change_id = toc.id" +
-                "     where client_id = ? and toc.name = 'CANCELLED') as query " +
-                "WHERE client_id = ?", ResultSet::getInt, dateTo, dateFrom, clientId, clientId);
+        return jdbcTemplate.queryForObject("SELECT cost_per_hour * count_of_hours_pr_week * FLOOR(TIMESTAMPDIFF(DAY, ?, ?)/7) - count(query.client_id) * cost_per_hour" +
+                "                FROM client c join schedule_change sc on c.id = sc.client_id, (select sc.client_id from schedule_change sc inner join type_of_change toc" +
+                "                on sc.type_of_change_id = toc.id" +
+                "                where sc.client_id = ? and toc.name = 'CANCELLED') as query" +
+                "                WHERE c.id = ?", Integer.class , dateFrom, dateTo, clientId, clientId);
     }
 
-    public int getAverageLosses(long clientId) {
-        return jdbcTemplate.queryForObject("SELECT c.cost_per_hour*SUM(sc.id)/ TIMESTAMPDIFF('month', c.date_of_beginning, " +
-                "CURRENT_TIMESTAMP FROM schedule_change sc left join client c on sc.client_id = c.id " +
+    public int getAverageLosses(long clientId, Date dateTo) {
+        return jdbcTemplate.queryForObject("SELECT c.cost_per_hour * COUNT(sc.id)/ TIMESTAMPDIFF(month, c.date_of_beginning, ?) " +
+                " FROM schedule_change sc left join client c on sc.client_id = c.id " +
                 "                inner join type_of_change toc on sc.type_of_change_id = toc.id " +
-                "                WHERE client_id = ? and toc.name = 'CANCELLED';", ResultSet::getInt, clientId);
+                "                WHERE c.id = ? and toc.name = 'CANCELLED';", Integer.class, dateTo, clientId);
     }
 
     public int getActualLosses(long clientId, Date dateFrom, Date dateTo) {
@@ -127,22 +126,24 @@ public class ClientAnalyzerDao {
                 "on c.id = sc.client_id " +
                 "inner join type_of_change toc on sc.type_of_change_id = toc.id " +
                 "where toc.name = 'CANCELLED' and c.id = ? and sc.date between ? and ?",
-                ResultSet::getInt, clientId, dateFrom, dateTo);
+                Integer.class, clientId, dateFrom, dateTo);
     }
 
-    public int getCancellationsPercentage(long clientId, Date dateFrom, Date dateTo) {
+    public double getCancellationsPercentage(long clientId, Date dateFrom, Date dateTo) {
         return getChangesPercentage(TypeOfChange.CANCELLED, clientId, dateFrom, dateTo);
     }
 
-    public int getShiftsPercentage(long clientId, Date dateFrom, Date dateTo) {
+    public double getShiftsPercentage(long clientId, Date dateFrom, Date dateTo) {
         return getChangesPercentage(TypeOfChange.SHIFTED, clientId, dateFrom, dateTo);
     }
 
-    private int getChangesPercentage(TypeOfChange type, long clientId, Date dateFrom, Date dateTo) {
-        return jdbcTemplate.queryForObject("SELECT 100 * (count(query.id)) / (c.count_of_meetings_pr_week * FLOOR(abs(TIMESTAMPDIFF('day', ?, ?))) / 7) " +
-                "from (select sc.id from schedule_change sc inner join type_of_change toc on sc.type_of_change_id = toc.id " +
-                "where sc.date between ? and ? and toc.name = ? and sc.client_id = ?) as query, client c " +
-                "where c.id = ?", ResultSet::getInt, dateFrom, dateTo, dateFrom, dateTo, type.name(), clientId, clientId);
+    private double getChangesPercentage(TypeOfChange type, long clientId, Date dateFrom, Date dateTo) {
+        String query1 = "select count(sc.id) from schedule_change sc inner join type_of_change toc on sc.type_of_change_id = toc.id " +
+                "        where sc.date between ? and ? and toc.name = ? and sc.client_id = ?";
+        String query2 = "SELECT c.count_of_meetings_pr_week * FLOOR(abs(TIMESTAMPDIFF(day, ?, ?))/7) FROM client c WHERE c.id = ?";
+
+        return jdbcTemplate.queryForObject("SELECT 100 * (" + query1 + ")/(" + query2 + ")",
+                Double.class, dateFrom, dateTo, type.name(), clientId, dateTo, dateFrom, clientId);
     }
 
 

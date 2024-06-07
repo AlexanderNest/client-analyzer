@@ -21,9 +21,10 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
     @Test
     void getCountOfSuccessfulMeetings() {
         Client client = createClient();
-        scheduleChangeDao.addScheduleChange(client.getId(), new Date(2024, 05, 14), null, false, TypeOfChange.CANCELLED);
+        long date = 1709424000000L;
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date (date + getDaysInMillis(3)), null, false, TypeOfChange.CANCELLED);
 
-        int actualCountOfSuccessfulMeetings = clientAnalyzerDao.getCountOfSuccessfulMeetings(client.getId(), new Date(2024, 05, 03), new Date(2024, 05, 17));
+        int actualCountOfSuccessfulMeetings = clientAnalyzerDao.getCountOfSuccessfulMeetings(client.getId(), new Date(date), new Date (date + getDaysInMillis(14)));
         assertEquals(3, actualCountOfSuccessfulMeetings);
     }
 
@@ -89,7 +90,7 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
 
     @Test
     void getExpectedIncoming() {
-        Client client = buildDefaultClient();
+        Client client = createClient();
         System.out.println(client.getId());
 
         int expectedIncoming = clientAnalyzerDao.getExpectedIncoming(client.getId(), new Date(2024, 04, 01), new Date(2024, 05, 01));
@@ -98,32 +99,62 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
 
     @Test
     void getActualIncoming() {
-        Client client = buildDefaultClient();
+        Client client = createClient();
+
         scheduleChangeDao.addScheduleChange(client.getId(), new Date(2024, 04, 10), null, false, TypeOfChange.CANCELLED);
         int actualIncoming = clientAnalyzerDao.getActualIncoming(client.getId(), new Date(2024, 04, 01), new Date(2024, 05, 01));
 
         assertEquals(7000, actualIncoming);
     }
 
-    void getAverageLosses(long clientId) {
+    @Test
+    void getAverageLosses() {
+        Client client = createClient(new Date(1709424000000L));
+        long date = 1709424000000L;
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(5)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(8)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(15)), null, false, TypeOfChange.CANCELLED);
 
+        int averageLosses = clientAnalyzerDao.getAverageLosses(client.getId(), new Date(date + getDaysInMillis(62)));
+        assertEquals(1500, averageLosses);
     }
 
+    @Test
     void getActualLosses() {
+        Client client = createClient(new Date(1709424000000L));
+        long date = 1709424000000L;
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(5)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(8)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(15)), null, false, TypeOfChange.CANCELLED);
 
+        int actualLosses = clientAnalyzerDao.getActualLosses(client.getId(), new Date(date),new Date(date + getDaysInMillis(62)));
+        assertEquals(3000, actualLosses);
     }
 
+    @Test
     void getCancellationsPercentage() {
+        Client client = createClient(new Date(1709424000000L));
+        long date = 1709424000000L;
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(5)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(8)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(15)), null, false, TypeOfChange.CANCELLED);
 
+        double cancellationsPercentage = clientAnalyzerDao.getCancellationsPercentage(client.getId(), new Date(date), new Date(date + getDaysInMillis(31)));
+        assertEquals(37.5, cancellationsPercentage);
     }
 
+    @Test
     void getShiftsPercentage() {
+        Client client = createClient(new Date(1709424000000L));
+        long date = 1709424000000L;
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(5)), new Date(date + getDaysInMillis(6)), false, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(8)), new Date(date + getDaysInMillis(9)), false, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(15)), new Date(date + getDaysInMillis(17)), false, TypeOfChange.SHIFTED);
 
+        double shiftsPercentage = clientAnalyzerDao.getShiftsPercentage(client.getId(), new Date(date), new Date(date + getDaysInMillis(31)));
+        assertEquals(37.5, shiftsPercentage);
     }
 
-    void getChangesPercentage() {
-
-    }
 }
 
    
