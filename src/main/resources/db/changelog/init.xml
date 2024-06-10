@@ -46,7 +46,8 @@
                 cost_per_hour int NOT NULL,
                 count_of_hours_pr_week float,
                 count_of_meetings_pr_week int,
-                active bit (1)
+                active bit (1),
+                date_of_beginning date not null
             );
         </sql>
     </changeSet>
