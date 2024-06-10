@@ -25,18 +25,6 @@ public class ScheduleChangeDao {
                 .usingGeneratedKeyColumns("id");
     }
 
-    private static final RowMapper<ScheduleChange> scRowMapper = (rs, rowNum) -> {
-        ScheduleChange scheduleChange = new ScheduleChange();
-        scheduleChange.setId(rs.getInt("id"));
-        scheduleChange.setClientId(rs.getInt("client_id"));
-        scheduleChange.setDate(rs.getDate("date"));
-        scheduleChange.setNewDate(rs.getDate("new_date"));
-        scheduleChange.setPlanned(rs.getBoolean("planned"));
-        //scheduleChange.setTyperOfChange(getTypeOfChange(rs.getInt("id")));
-
-        return scheduleChange;
-    };
-
     public void addScheduleChange(long clientId, Date date, Date newDate, boolean isPlanned, TypeOfChange type) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource() {{
             addValue("clientId", clientId);

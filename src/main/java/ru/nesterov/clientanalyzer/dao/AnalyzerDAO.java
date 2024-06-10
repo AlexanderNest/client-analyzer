@@ -31,41 +31,35 @@ public class AnalyzerDAO {
         return clientScheduleChanges;
     };
 
-
-
-//    public List<Client> getCountOfMeetingsHeld () {
-//        return jdbcTemplate.query("SELECT SUM(client.count_of_meetings_pr_week) as countOfMeetings" +
-//                "FROM client" +
-//                "         LEFT JOIN schedule_change ON client.id = schedule_change.client_id" +
-//                "         INNER JOIN type_of_change ON schedule_change.type_of_change_id = type_of_change.id" +
-//                "WHERE type_of_change.name <> 'CANCELLED' and client.active;", clientRowMapper);
-//    }
-
     public List<ClientScheduleChanges> getClientsOfUnplannedShifts () {
-        return jdbcTemplate.query("select client_id, count(client_id) as count_of_changes \n" +
-                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id\n" +
-                "where schedule_change.planned = 0 and type_of_change.name = 'SHIFTED'\n" +
-                "group by client_id;", clientScheduleChangesRowMapper);
+        String sql = "select client_id, count(client_id) as count_of_changes " +
+                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id " +
+                "where schedule_change.planned = 0 and type_of_change.name = 'SHIFTED' " +
+                "group by client_id;";
+        return jdbcTemplate.query(sql, clientScheduleChangesRowMapper);
     }
 
     public List<ClientScheduleChanges> getClientsOfPlannedShifts () {
-        return jdbcTemplate.query("select client_id, count(client_id) as count_of_changes \n" +
-                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id\n" +
-                "where schedule_change.planned and type_of_change.name = 'SHIFTED'\n" +
-                "group by client_id;", clientScheduleChangesRowMapper);
+        String sql = "select client_id, count(client_id) as count_of_changes " +
+                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id " +
+                "where schedule_change.planned and type_of_change.name = 'SHIFTED' " +
+                "group by client_id;";
+        return jdbcTemplate.query(sql, clientScheduleChangesRowMapper);
     }
 
     public List<ClientScheduleChanges> getClientsWithUnplannedCancellations () {
-        return jdbcTemplate.query("select client_id, count(client_id) as count_of_changes \n" +
-                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id\n" +
-                "where schedule_change.planned = 0 and type_of_change.name = 'CANCELLED'\n" +
-                "group by client_id;", clientScheduleChangesRowMapper);
+        String sql = "select client_id, count(client_id) as count_of_changes " +
+                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id " +
+                "where schedule_change.planned = 0 and type_of_change.name = 'CANCELLED' " +
+                "group by client_id;";
+        return jdbcTemplate.query(sql, clientScheduleChangesRowMapper);
     }
 
     public List<ClientScheduleChanges> getClientsWithPlannedCancellations () {
-        return jdbcTemplate.query("select client_id, count(client_id) as count_of_changes \n" +
-                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id\n" +
-                "where schedule_change.planned and type_of_change.name = 'CANCELLED'\n" +
-                "group by client_id;", clientScheduleChangesRowMapper);
+        String sql = "select client_id, count(client_id) as count_of_changes " +
+                "from schedule_change inner join type_of_change on schedule_change.type_of_change_id = type_of_change.id " +
+                "where schedule_change.planned and type_of_change.name = 'CANCELLED' " +
+                "group by client_id;";
+        return jdbcTemplate.query(sql, clientScheduleChangesRowMapper);
     }
 }
