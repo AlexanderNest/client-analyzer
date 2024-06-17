@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 @SpringBootTest
 public class BaseClientTest {
     @Autowired
-    protected ClientDao clientDao;
+    protected ClientDaoImpl clientDao;
 
     protected Client createClient(String name, boolean isActive) {
         return buildAndSaveClientWithModificator(client -> {

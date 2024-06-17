@@ -1,51 +1,21 @@
 package ru.nesterov.clientanalyzer.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import ru.nesterov.clientanalyzer.dao.AnalyzerDAO;
-import ru.nesterov.clientanalyzer.dao.ClientAnalyzerDao;
-import ru.nesterov.clientanalyzer.dao.ClientDao;
+import org.springframework.web.bind.annotation.*;
+import ru.nesterov.clientanalyzer.controller.request.GetClientByIdRequest;
 import ru.nesterov.clientanalyzer.models.Client;
-import ru.nesterov.clientanalyzer.models.ClientScheduleChanges;
-
-import java.util.List;
+import ru.nesterov.clientanalyzer.service.ClientService;
 
 @RestController
-@RequiredArgsConstructor
+@RequestMapping("/client")
 public class ClientController {
-    private final AnalyzerDAO analyzerDAO;
-    private final ClientAnalyzerDao clientAnalyzerDao;
-    private final ClientDao clientDao;
-
-    @GetMapping("/getClientById/{id}")
-    public Client getClientById (@PathVariable int id) {
-        return clientDao.getClientById(id);
+    //private final ClientAnalyzerService clientAnalyzerService;
+    private final ClientService clientService;
+// все передавать в теле
+    public ClientController (ClientService clientService) {
+        this.clientService = clientService;
     }
-
-    @GetMapping("/getCountOfMeetingsHeld")
-    public int getCountOfMeetingsHeld () {
-        return clientAnalyzerDao.getCountOfSuccessfulMeetings();
-    }
-
-    @GetMapping("/getCountOfUnplannedShifts")
-    public List<ClientScheduleChanges> getCountOfUnplannedShifts () {
-        return analyzerDAO.getClientsOfUnplannedShifts();
-    }
-
-    @GetMapping("/getCountOfPlannedShifts")
-    public List<ClientScheduleChanges> getCountOfPlannedShifts () {
-        return analyzerDAO.getClientsOfPlannedShifts();
-    }
-
-    @GetMapping("/getCountOfPlannedCancellations")
-    public List<ClientScheduleChanges> getCountOfPlannedCancellations () {
-        return analyzerDAO.getClientsWithPlannedCancellations();
-    }
-
-    @GetMapping("/getCountOfUnplannedCancellations")
-    public List<ClientScheduleChanges> getCountOfUnplannedCancellations () {
-        return analyzerDAO.getClientsWithPlannedCancellations();
+    @GetMapping("/getClientById")
+    public Client getClientById (@RequestBody GetClientByIdRequest request) {
+        return clientService.getClientById((int)request.getId());
     }
 }

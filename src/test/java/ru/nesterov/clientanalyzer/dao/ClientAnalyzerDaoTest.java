@@ -1,13 +1,11 @@
 package ru.nesterov.clientanalyzer.dao;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.nesterov.clientanalyzer.models.Client;
 import ru.nesterov.clientanalyzer.models.TypeOfChange;
 
-import java.sql.ResultSet;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +14,7 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
     @Autowired
     private ScheduleChangeDao scheduleChangeDao;
     @Autowired
-    private ClientAnalyzerDao clientAnalyzerDao;
+    private ClientAnalyzerDaoImpl clientAnalyzerDao;
 
     @Test
     void getCountOfSuccessfulMeetings() {
