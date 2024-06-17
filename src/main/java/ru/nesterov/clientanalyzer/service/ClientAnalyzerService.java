@@ -9,6 +9,7 @@ import java.util.Date;
 @Service
 public class ClientAnalyzerService {
     private final ClientAnalyzerDao clientAnalyzerDao;
+
     public ClientAnalyzerService (ClientAnalyzerDao clientAnalyzerDao) {
         this.clientAnalyzerDao = clientAnalyzerDao;
     }

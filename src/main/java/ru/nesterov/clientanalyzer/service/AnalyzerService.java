@@ -15,19 +15,19 @@ public class AnalyzerService {
         this.analyzerDao = analyzerDao;
     }
 
-        public List<ClientScheduleChanges> getClientsOfUnplannedShifts () {
+    public List<ClientScheduleChanges> getClientsOfUnplannedShifts() {
         return analyzerDao.getClientsOfUnplannedShifts();
     }
 
-    public List<ClientScheduleChanges> getClientsOfPlannedShifts () {
+    public List<ClientScheduleChanges> getClientsOfPlannedShifts() {
         return analyzerDao.getClientsOfPlannedShifts();
     }
 
-    public List<ClientScheduleChanges> getClientsWithUnplannedCancellations () {
+    public List<ClientScheduleChanges> getClientsWithUnplannedCancellations() {
         return analyzerDao.getClientsWithUnplannedCancellations();
     }
 
-    public List<ClientScheduleChanges> getClientsWithPlannedCancellations () {
+    public List<ClientScheduleChanges> getClientsWithPlannedCancellations() {
         return analyzerDao.getClientsWithPlannedCancellations();
     }
 

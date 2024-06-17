@@ -49,26 +49,32 @@ public class ClientAnalyzerController {
     public int getCountOfPlannedCancels(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return  clientAnalyzerService.getCountOfPlannedCancels(clientId, dateFrom, dateTo);
     }
+
     @GetMapping("/getAverageCancellationsPerMonth")
     public double getAverageCancellationsPerMonth(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return  clientAnalyzerService.getAverageCancellationsPerMonth(clientId, dateFrom, dateTo);
     }
+
     @GetMapping("/getAverageShiftsPerMonth")
     public double getAverageShiftsPerMonth(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return  clientAnalyzerService.getAverageShiftsPerMonth(clientId, dateFrom, dateTo);
     }
+
     @GetMapping("/getExpectedIncoming")
     public int getExpectedIncoming(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return clientAnalyzerService.getExpectedIncoming(clientId, dateFrom, dateTo);
     }
+
     @GetMapping("/getActualIncoming")
     public int getActualIncoming(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return clientAnalyzerService.getActualIncoming(clientId, dateFrom, dateTo);
     }
+
     @GetMapping("/getAverageLosses")
     public int getAverageLosses(@RequestBody long clientId, @RequestBody Date dateTo) {
         return clientAnalyzerService.getAverageLosses(clientId, dateTo);
     }
+
     @GetMapping("/getActualLosses")
     public int getActualLosses(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return clientAnalyzerService.getActualLosses(clientId, dateFrom, dateTo);
@@ -78,12 +84,9 @@ public class ClientAnalyzerController {
     public double getCancellationsPercentage(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return clientAnalyzerService.getCancellationsPercentage(clientId, dateFrom, dateTo);
     }
+
     @GetMapping("/getShiftsPercentage")
     public double getShiftsPercentage(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
         return clientAnalyzerService.getShiftsPercentage(clientId, dateFrom, dateTo);
     }
-
-
-
-
 }

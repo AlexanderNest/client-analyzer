@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class GetClientByIdRequest {
-    long id;
+    private long id;
 }

@@ -14,7 +14,7 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
     @Autowired
     private ScheduleChangeDao scheduleChangeDao;
     @Autowired
-    private ClientAnalyzerDaoImpl clientAnalyzerDao;
+    private ClientAnalyzerDao clientAnalyzerDao;
 
     @Test
     void getCountOfSuccessfulMeetings() {

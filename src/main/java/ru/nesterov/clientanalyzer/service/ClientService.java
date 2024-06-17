@@ -8,6 +8,7 @@ import ru.nesterov.clientanalyzer.models.Client;
 @Service
 public class ClientService {
     private final ClientDao clientDao;
+
     public ClientService (ClientDao clientDao) {
         this.clientDao = clientDao;
     }
