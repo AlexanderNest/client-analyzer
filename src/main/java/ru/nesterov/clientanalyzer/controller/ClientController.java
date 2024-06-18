@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.nesterov.clientanalyzer.controller.request.CreateClientRequest;
 import ru.nesterov.clientanalyzer.controller.request.GetClientByIdRequest;
 import ru.nesterov.clientanalyzer.models.Client;
+import ru.nesterov.clientanalyzer.service.ClientDto;
 import ru.nesterov.clientanalyzer.service.ClientService;
 
 @RestController
@@ -16,7 +17,7 @@ public class ClientController {
     }
 
     @GetMapping("/getClientById")
-    public Client getClientById(@RequestBody GetClientByIdRequest request) {
+    public ClientDto getClientById(@RequestBody GetClientByIdRequest request) {
         return clientService.getClientById((int)request.getId());
     }
 

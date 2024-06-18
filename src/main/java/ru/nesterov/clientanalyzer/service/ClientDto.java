@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class ClientDto {
-    private long id;
+    private int id;
     private String name;
     private int costPerHour;
     private float countOfHoursPerWeek;
