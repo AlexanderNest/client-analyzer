@@ -1,6 +1,5 @@
 package ru.nesterov.clientanalyzer.dao;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +11,6 @@ import ru.nesterov.clientanalyzer.models.CommunicationType;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 @Repository
 public class ClientDaoImpl implements ClientDao{

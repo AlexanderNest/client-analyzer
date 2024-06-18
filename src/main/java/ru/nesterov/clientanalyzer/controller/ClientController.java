@@ -21,8 +21,8 @@ public class ClientController {
         return clientService.getClientById((int)request.getId());
     }
 
-   // @GetMapping("/createClient")
-  //  public Client createClient(@RequestBody CreateClientRequest request) {}
-      //  return clientService.save(request.)
-
+    @GetMapping("/createClient")
+    public ClientDto createClient(@RequestBody CreateClientRequest request) {
+        return clientService.save(request.getClientDto());
+   }
 }

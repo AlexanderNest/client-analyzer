@@ -1,5 +1,6 @@
 package ru.nesterov.clientanalyzer.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nesterov.clientanalyzer.dao.AnalyzerDao;
 import ru.nesterov.clientanalyzer.models.Client;
@@ -11,6 +12,7 @@ import java.util.List;
 public class AnalyzerService {
     private final AnalyzerDao analyzerDao;
 
+    @Autowired
     public AnalyzerService (AnalyzerDao analyzerDao) {
         this.analyzerDao = analyzerDao;
     }
