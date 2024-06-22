@@ -1,23 +1,22 @@
-package ru.nesterov.clientanalyzer.service;
+package ru.nesterov.clientanalyzer.service.mapper;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nesterov.clientanalyzer.models.Client;
+import ru.nesterov.clientanalyzer.service.ClientDto;
 
 @Service
-public class ClientMapping {
+public class ClientMapper {
     public ClientDto mapToClientDto(Client client) {
-        ClientDto clientDto = new ClientDto();
-        clientDto.setId(client.getId());
-        clientDto.setName(client.getName());
-        clientDto.setActive(client.isActive());
-        clientDto.setCommunication(client.getCommunication());
-        clientDto.setCostPerHour(client.getCostPerHour());
-        clientDto.setCountOfHoursPerWeek(client.getCountOfHoursPerWeek());
-        clientDto.setCountOfMeetingsPerWeek(client.getCountOfMeetingsPerWeek());
-        clientDto.setDateOfBeginning(client.getDateOfBeginning());
-
-        return clientDto;
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .communication(client.getCommunication())
+                .costPerHour(client.getCostPerHour())
+                .countOfMeetingsPerWeek(client.getCountOfMeetingsPerWeek())
+                .active(client.isActive())
+                .dateOfBeginning(client.getDateOfBeginning())
+                .countOfHoursPerWeek(client.getCountOfHoursPerWeek())
+                .build();
     }
 
     public Client mapToClient(ClientDto clientDto) {

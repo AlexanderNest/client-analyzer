@@ -4,29 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nesterov.clientanalyzer.dao.ClientDao;
 import ru.nesterov.clientanalyzer.models.Client;
+import ru.nesterov.clientanalyzer.service.mapper.ClientMapper;
 
 @Service
 public class ClientService {
     private final ClientDao clientDao;
-    private final ClientMapping clientMapping;
+    private final ClientMapper clientMapper;
 
     @Autowired
-    public ClientService (ClientDao clientDao, ClientMapping clientMapping) {
+    public ClientService (ClientDao clientDao, ClientMapper clientMapper) {
         this.clientDao = clientDao;
-        this.clientMapping = clientMapping;
+        this.clientMapper = clientMapper;
     }
 
     public ClientDto getClientById(int id) {
-        return clientMapping.mapToClientDto(clientDao.getClientById(id));
+        return clientMapper.mapToClientDto(clientDao.getClientById(id));
     }
 
     public ClientDto save(ClientDto clientDto) {
-        Client client = clientMapping.mapToClient(clientDto);
-        return clientMapping.mapToClientDto(clientDao.save(client));
-    }
-
-    public ClientDto createClient(ClientDto clientDto) {
-        Client client = clientMapping.mapToClient(clientDto);
-        return clientMapping.mapToClientDto(clientDao.save(client));
+        Client client = clientMapper.mapToClient(clientDto);
+        return clientMapper.mapToClientDto(clientDao.save(client));
     }
 }
