@@ -1,12 +1,15 @@
-package ru.nesterov.clientanalyzer.models;
+package ru.nesterov.clientanalyzer.controller.response;
 
+import lombok.Builder;
 import lombok.Data;
+import ru.nesterov.clientanalyzer.models.Communication;
 
 import java.util.Date;
 
 @Data
-public class Client {
-    private int id;
+@Builder
+public class CreateClientResponse {
+    private int clientId;
     private String name;
     private int costPerHour;
     private float countOfHoursPerWeek;
@@ -15,4 +18,3 @@ public class Client {
     private Date dateOfBeginning;
     private Communication communication;
 }
-

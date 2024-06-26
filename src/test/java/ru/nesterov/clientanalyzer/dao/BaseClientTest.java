@@ -34,7 +34,6 @@ public class BaseClientTest {
         return buildAndSaveClientWithModificator(null);
     }
 
-
     private Client buildAndSaveClientWithModificator(Consumer<Client> clientModificator) {
         Client client = buildDefaultClient();
 
