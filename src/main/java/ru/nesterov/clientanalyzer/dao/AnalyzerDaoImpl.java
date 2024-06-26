@@ -12,16 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnalyzerDaoImpl implements AnalyzerDao {
     private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<ScheduleChange> scheduleChangeRowMapper = (rs, rowNum) -> {
-        ScheduleChange scheduleChange = new ScheduleChange();
-        scheduleChange.setId(rs.getInt("id"));
-        scheduleChange.setClientId(rs.getInt("client_id"));
-        scheduleChange.setDate(rs.getDate("date"));
-        scheduleChange.setNewDate(rs.getDate("new_date"));
-        scheduleChange.setPlanned(rs.getBoolean("planned"));
-        scheduleChange.setTyperOfChange(TypeOfChange.valueOf(rs.getString("type_of_change")));
-        return scheduleChange;
-    };
+
     static final RowMapper<ClientScheduleChanges> clientScheduleChangesRowMapper = (rs, rowNum) -> {
         ClientScheduleChanges clientScheduleChanges = new ClientScheduleChanges();
         clientScheduleChanges.setClientId(rs.getInt("client_id"));

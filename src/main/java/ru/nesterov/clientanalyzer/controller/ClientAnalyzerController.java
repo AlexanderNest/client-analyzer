@@ -4,89 +4,124 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nesterov.clientanalyzer.controller.request.ClientAnalyzerRequest;
+import ru.nesterov.clientanalyzer.controller.request.GetAverageLossesRequest;
+import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerDoubleResponse;
+import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerIntegerResponse;
 import ru.nesterov.clientanalyzer.service.ClientAnalyzerService;
-
-import java.util.Date;
+import ru.nesterov.clientanalyzer.service.mapper.ClientMapper;
 
 @RestController
 @RequestMapping("/clientController")
 public class ClientAnalyzerController {
     private final ClientAnalyzerService clientAnalyzerService;
-    public ClientAnalyzerController(ClientAnalyzerService clientAnalyzerService) {
+
+    public ClientAnalyzerController(ClientAnalyzerService clientAnalyzerService, ClientMapper clientMapper) {
         this.clientAnalyzerService = clientAnalyzerService;
     }
+
     @GetMapping("/getCountOfSuccessfulMeetings")
-    public int getCountOfSuccessfulMeetings() {
-        return clientAnalyzerService.getCountOfSuccessfulMeetings();
+    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetings() {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfSuccessfulMeetings())
+                .build();
     }
 
     @GetMapping("/getCountOfSuccessfulMeetingsByClientId")
-    public int getCountOfSuccessfulMeetings(@RequestBody long id) {
-        return clientAnalyzerService.getCountOfSuccessfulMeetings(id);
+    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetingsByClientId(@RequestBody long id) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(id)).
+                build();
     }
 
-    @GetMapping("/getCountOfSuccessfulMeetingsWithDates")
-    public int getCountOfSuccessfulMeetings(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getCountOfSuccessfulMeetings(clientId, dateFrom, dateTo);
+    @GetMapping("/getCountOfSuccessfulMeetingsWithDatesByClientId")
+    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetingsByClientId(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getCountOfUnplannedShifts")
-    public int getCountOfUnplannedShifts(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return  clientAnalyzerService.getCountOfUnplannedShifts(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getCountOfUnplannedShifts(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfUnplannedShifts(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getCountOfPlannedShifts")
-    public int getCountOfPlannedShifts(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return  clientAnalyzerService.getCountOfPlannedShifts(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getCountOfPlannedShifts(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfPlannedShifts(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getCountOfUnplannedCancels")
-    public int getCountOfUnplannedCancels(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return  clientAnalyzerService.getCountOfUnplannedCancels(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getCountOfUnplannedCancels(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfUnplannedCancels(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getCountOfPlannedCancels")
-    public int getCountOfPlannedCancels(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return  clientAnalyzerService.getCountOfPlannedCancels(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getCountOfPlannedCancels(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getCountOfPlannedCancels(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getAverageCancellationsPerMonth")
-    public double getAverageCancellationsPerMonth(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return  clientAnalyzerService.getAverageCancellationsPerMonth(clientId, dateFrom, dateTo);
+    public ClientAnalyzerDoubleResponse getAverageCancellationsPerMonth(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerDoubleResponse.builder()
+                .response(clientAnalyzerService.getAverageCancellationsPerMonth(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getAverageShiftsPerMonth")
-    public double getAverageShiftsPerMonth(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return  clientAnalyzerService.getAverageShiftsPerMonth(clientId, dateFrom, dateTo);
+    public ClientAnalyzerDoubleResponse getAverageShiftsPerMonth(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerDoubleResponse.builder()
+                .response(clientAnalyzerService.getAverageShiftsPerMonth(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getExpectedIncoming")
-    public int getExpectedIncoming(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getExpectedIncoming(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getExpectedIncoming(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getExpectedIncoming(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getActualIncoming")
-    public int getActualIncoming(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getActualIncoming(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getActualIncoming(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getActualIncoming(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getAverageLosses")
-    public int getAverageLosses(@RequestBody long clientId, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getAverageLosses(clientId, dateTo);
+    public ClientAnalyzerIntegerResponse getAverageLosses(@RequestBody GetAverageLossesRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getAverageLosses(request.getClientId(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getActualLosses")
-    public int getActualLosses(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getActualLosses(clientId, dateFrom, dateTo);
+    public ClientAnalyzerIntegerResponse getActualLosses(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getActualLosses(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getCancellationsPercentage")
-    public double getCancellationsPercentage(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getCancellationsPercentage(clientId, dateFrom, dateTo);
+    public ClientAnalyzerDoubleResponse getCancellationsPercentage(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerDoubleResponse.builder()
+                .response(clientAnalyzerService.getCancellationsPercentage(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 
     @GetMapping("/getShiftsPercentage")
-    public double getShiftsPercentage(@RequestBody long clientId, @RequestBody Date dateFrom, @RequestBody Date dateTo) {
-        return clientAnalyzerService.getShiftsPercentage(clientId, dateFrom, dateTo);
+    public ClientAnalyzerDoubleResponse getShiftsPercentage(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerDoubleResponse.builder()
+                .response(clientAnalyzerService.getShiftsPercentage(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .build();
     }
 }

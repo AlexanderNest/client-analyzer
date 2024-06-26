@@ -32,5 +32,4 @@ public class AnalyzerService {
     public List<ClientScheduleChanges> getClientsWithPlannedCancellations() {
         return analyzerDao.getClientsWithPlannedCancellations();
     }
-
 }

@@ -14,7 +14,6 @@ import java.util.Map;
 
 @Repository
 public class ScheduleChangeDao {
-
     private final SimpleJdbcInsert insertScheduleChange;
     private final NamedParameterJdbcTemplate jdbcTemplate;
 

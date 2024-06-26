@@ -11,11 +11,7 @@ import java.util.List;
 @Repository
 public interface AnalyzerDao {
     List<ClientScheduleChanges> getClientsOfUnplannedShifts ();
-
     List<ClientScheduleChanges> getClientsOfPlannedShifts ();
-
     List<ClientScheduleChanges> getClientsWithUnplannedCancellations ();
-
     List<ClientScheduleChanges> getClientsWithPlannedCancellations ();
-
 }
