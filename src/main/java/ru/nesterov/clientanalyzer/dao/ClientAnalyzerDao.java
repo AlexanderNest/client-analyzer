@@ -26,8 +26,6 @@ public interface ClientAnalyzerDao {
 
     double getAverageShiftsPerMonth(long clientId, Date dateFrom, Date dateTo);
 
-//    double getAverageChangesPerMonth(TypeOfChange typeOfChange, long clientId, Date dateFrom, Date dateTo);
-
     int getExpectedIncoming(long clientId, Date dateFrom, Date dateTo);
 
     int getActualIncoming(long clientId, Date dateFrom, Date dateTo);
@@ -39,4 +37,14 @@ public interface ClientAnalyzerDao {
     double getCancellationsPercentage(long clientId, Date dateFrom, Date dateTo);
 
     double getShiftsPercentage(long clientId, Date dateFrom, Date dateTo);
+
+    String getMostFrequentCancellationDay();
+
+    String getMostFrequentShiftDay();
+
+    int getMostFrequentCancellationMonth();
+
+    int getMostFrequentShiftMonth();
+
+    double getSuccessfulMeetingsPercentage();
 }

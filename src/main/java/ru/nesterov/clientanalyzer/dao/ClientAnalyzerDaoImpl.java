@@ -12,23 +12,71 @@ import java.util.Date;
 
 @Repository
 @RequiredArgsConstructor
-public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao{
+public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    //Расчет доходности по всем клиентам
+
+//    public int getAllClientsIncoming(Date dateFrom, Date dateTo) {
+//
+//    }
+
+    public double getSuccessfulMeetingsPercentage() {
+        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, date_of_beginning, current_timestamp) / 7) * count_of_meetings_pr_week) FROM client";
+        return getCountOfSuccessfulMeetings()/jdbcTemplate.queryForObject(plannedMeetings, Integer.class) * 100;
+    }
+
+    public String getMostFrequentChangeDay(TypeOfChange typeOfChange) {
+        String sql = "SELECT DATE_FORMAT(sc.date, '%Y-%m-%d') AS cancellation_day " +
+                "FROM schedule_change sc " +
+                "         JOIN type_of_change tc ON sc.type_of_change_id = tc.id " +
+                "WHERE tc.name = ? " +
+                "GROUP BY DATE_FORMAT(sc.date, '%Y-%m-%d') " +
+                "ORDER BY COUNT(sc.client_id) DESC " +
+                "LIMIT 1;";
+        return jdbcTemplate.queryForObject(sql, String.class, typeOfChange.name());
+    }
+
+    public String getMostFrequentCancellationDay() {
+        return getMostFrequentChangeDay(TypeOfChange.CANCELLED);
+    }
+
+    public String getMostFrequentShiftDay() {
+        return getMostFrequentChangeDay(TypeOfChange.SHIFTED);
+    }
+
+    public int getMostFrequentChangeMonth(TypeOfChange typeOfChange) {
+        String sql = "SELECT MONTH(sc.date) AS cancellation_month " +
+                "FROM schedule_change sc " +
+                "         JOIN type_of_change tc ON sc.type_of_change_id = tc.id " +
+                "WHERE tc.name = ? " +
+                "GROUP BY MONTH(sc.date) " +
+                "ORDER BY COUNT(sc.client_id) DESC " +
+                "LIMIT 1;";
+        return jdbcTemplate.queryForObject(sql, Integer.class, typeOfChange.name());
+    }
+
+    public int getMostFrequentCancellationMonth() {
+        return getMostFrequentChangeMonth(TypeOfChange.CANCELLED);
+    }
+
+    public int getMostFrequentShiftMonth() {
+        return getMostFrequentChangeMonth(TypeOfChange.SHIFTED);
+    }
 
     public int getCountOfSuccessfulMeetings() {
-        String sql = "SELECT SUM(FLOOR(DATEDIFF(NOW(), date_of_beginning) / 7) * " +
-                "count_of_meetings_pr_week) AS weeks_passed_total_meetings " +
-                "FROM client;";
+        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, date_of_beginning, current_timestamp) / 7) * count_of_meetings_pr_week) FROM client";
+        String cancelledMeetings = "SELECT COUNT(sc.id) FROM schedule_change sc INNER JOIN type_of_change toc ON sc.type_of_change_id = toc.id WHERE toc.name = 'CANCELLED'";
+        String sql = "SELECT (" + plannedMeetings + ") - (" + cancelledMeetings + ")";
+
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     public int getCountOfSuccessfulMeetings(long clientId) {
-        String sql = "SELECT FLOOR(timestampdiff(DAY, CURRENT_TIMESTAMP, date_of_beginning) / 7) * " +
-                "count_of_meetings_pr_week AS total_meetings " +
-                "FROM client " +
-                "WHERE client.id  = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, clientId);
+        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, date_of_beginning, current_timestamp) / 7) * count_of_meetings_pr_week) FROM client where client.id = ?";
+        String cancelledMeetings = "SELECT COUNT(sc.id) FROM schedule_change sc INNER JOIN type_of_change toc ON sc.type_of_change_id = toc.id WHERE toc.name = 'CANCELLED' and sc.client_id = ?";
+        String sql = "SELECT (" + plannedMeetings + ") - (" + cancelledMeetings + ")";
+        return jdbcTemplate.queryForObject(sql, Integer.class, clientId, clientId);
     }
 
     public int getCountOfSuccessfulMeetings(long clientId, Date dateFrom, Date dateTo) {
