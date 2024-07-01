@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nesterov.clientanalyzer.controller.request.ClientAnalyzerRequest;
 import ru.nesterov.clientanalyzer.controller.request.GetAverageLossesRequest;
+import ru.nesterov.clientanalyzer.controller.request.GetClientByIdRequest;
 import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerDoubleResponse;
 import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerIntegerResponse;
+import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerStringResponse;
 import ru.nesterov.clientanalyzer.service.ClientAnalyzerService;
 import ru.nesterov.clientanalyzer.service.mapper.ClientMapper;
 
@@ -28,9 +30,9 @@ public class ClientAnalyzerController {
     }
 
     @GetMapping("/getCountOfSuccessfulMeetingsByClientId")
-    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetingsByClientId(@RequestBody long id) {
+    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetingsByClientId(@RequestBody GetClientByIdRequest request) {
         return ClientAnalyzerIntegerResponse.builder()
-                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(id)).
+                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(request.getClientId())).
                 build();
     }
 
@@ -124,4 +126,40 @@ public class ClientAnalyzerController {
                 .response(clientAnalyzerService.getShiftsPercentage(request.getClientId(), request.getDateFrom(), request.getDateTo()))
                 .build();
     }
+
+    @GetMapping("/getMostFrequentCancellationDay")
+    public ClientAnalyzerStringResponse getMostFrequentCancellationDay() {
+        return ClientAnalyzerStringResponse.builder()
+                .response(clientAnalyzerService.getMostFrequentCancellationDay())
+                .build();
+    }
+
+    @GetMapping("/getMostFrequentShiftDay")
+    public ClientAnalyzerStringResponse getMostFrequentShiftDay() {
+        return ClientAnalyzerStringResponse.builder()
+                .response(clientAnalyzerService.getMostFrequentShiftDay())
+                .build();
+    }
+
+    @GetMapping("/getMostFrequentCancellationMonth")
+    public ClientAnalyzerIntegerResponse getMostFrequentCancellationMonth() {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getMostFrequentCancellationMonth())
+                .build();
+    }
+
+    @GetMapping("/getMostFrequentShiftMonth")
+    public ClientAnalyzerIntegerResponse getMostFrequentShiftMonth() {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getMostFrequentShiftMonth())
+                .build();
+    }
+
+    @GetMapping("/getSuccessfulMeetingsPercentage")
+    public ClientAnalyzerDoubleResponse getSuccessfulMeetingsPercentage() {
+        return ClientAnalyzerDoubleResponse.builder()
+                .response(clientAnalyzerService.getSuccessfulMeetingsPercentage())
+                .build();
+    }
+
 }

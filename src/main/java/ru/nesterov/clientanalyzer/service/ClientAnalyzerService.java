@@ -75,4 +75,16 @@ public class ClientAnalyzerService {
     public double getShiftsPercentage(long clientId, Date dateFrom, Date dateTo) {
         return clientAnalyzerDao.getShiftsPercentage(clientId, dateFrom, dateTo);
     }
+
+    public String getMostFrequentCancellationDay() {
+        return clientAnalyzerDao.getMostFrequentCancellationDay();
+    }
+
+    public String getMostFrequentShiftDay() { return clientAnalyzerDao.getMostFrequentShiftDay(); }
+
+    public int getMostFrequentCancellationMonth() { return clientAnalyzerDao.getMostFrequentCancellationMonth(); }
+
+    public int getMostFrequentShiftMonth() { return clientAnalyzerDao.getMostFrequentShiftMonth(); }
+
+    public double getSuccessfulMeetingsPercentage() { return clientAnalyzerDao.getSuccessfulMeetingsPercentage(); }
 }
