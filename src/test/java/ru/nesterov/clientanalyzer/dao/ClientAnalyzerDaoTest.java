@@ -211,16 +211,31 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
 
         assertEquals(mostFrequentCancellationMonth, clientAnalyzerDao.getMostFrequentCancellationMonth());}
 
+    @Test
     void getSuccessfulMeetingsPercentage() {
-        Client client = createClient();
         long date = 1709424000000L;
+        Client client = createClient(new Date(date + getDaysInMillis(90)));
+
         scheduleChangeDao.addScheduleChange(client.getId(), new Date (date + getDaysInMillis(3)), null, false, TypeOfChange.CANCELLED);
 
         double successfulMeetingsPercentage = clientAnalyzerDao.getSuccessfulMeetingsPercentage();
-        assertEquals(1/8, successfulMeetingsPercentage);
+        assertEquals((double)7/8 * 100, successfulMeetingsPercentage);
     }
 
-    void getAllClientsIncoming() {}
+    @Test
+    void getAllClientsIncoming() {
+        long date = 1709424000000L;
+        Client client = createClient();
+        Client client1 = createClient();
+
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(6)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(5)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client1.getId(), new Date(date + getDaysInMillis(7)), null, true, TypeOfChange.CANCELLED);
+
+        int allClientsIncoming = clientAnalyzerDao.getAllClientsIncoming(new Date(date), new Date(date + getDaysInMillis(30)));
+
+        assertEquals(13000, allClientsIncoming);
+    }
 }
 
    
