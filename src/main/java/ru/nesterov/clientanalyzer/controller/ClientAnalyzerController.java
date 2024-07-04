@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nesterov.clientanalyzer.controller.request.ClientAnalyzerRequest;
+import ru.nesterov.clientanalyzer.controller.request.ClientAnalyzerTwoDatesRequest;
 import ru.nesterov.clientanalyzer.controller.request.GetAverageLossesRequest;
 import ru.nesterov.clientanalyzer.controller.request.GetClientByIdRequest;
 import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerDoubleResponse;
 import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerIntegerResponse;
+import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerResponse;
 import ru.nesterov.clientanalyzer.controller.response.ClientAnalyzerStringResponse;
 import ru.nesterov.clientanalyzer.service.ClientAnalyzerService;
 import ru.nesterov.clientanalyzer.service.mapper.ClientMapper;
@@ -39,7 +41,7 @@ public class ClientAnalyzerController {
     @GetMapping("/getCountOfSuccessfulMeetingsWithDatesByClientId")
     public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetingsByClientId(@RequestBody ClientAnalyzerRequest request) {
         return ClientAnalyzerIntegerResponse.builder()
-                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(request.getClientId()))
                 .build();
     }
 
@@ -79,9 +81,9 @@ public class ClientAnalyzerController {
     }
 
     @GetMapping("/getAverageShiftsPerMonth")
-    public ClientAnalyzerDoubleResponse getAverageShiftsPerMonth(@RequestBody ClientAnalyzerRequest request) {
-        return ClientAnalyzerDoubleResponse.builder()
-                .response(clientAnalyzerService.getAverageShiftsPerMonth(request.getClientId(), request.getDateFrom(), request.getDateTo()))
+    public ClientAnalyzerResponse getAverageShiftsPerMonth(@RequestBody ClientAnalyzerRequest request) {
+        return ClientAnalyzerResponse.builder()
+                .value(clientAnalyzerService.getAverageShiftsPerMonth(request.getClientId(), request.getDateFrom(), request.getDateTo()))
                 .build();
     }
 
@@ -142,15 +144,15 @@ public class ClientAnalyzerController {
     }
 
     @GetMapping("/getMostFrequentCancellationMonth")
-    public ClientAnalyzerIntegerResponse getMostFrequentCancellationMonth() {
-        return ClientAnalyzerIntegerResponse.builder()
+    public ClientAnalyzerStringResponse getMostFrequentCancellationMonth() {
+        return ClientAnalyzerStringResponse.builder()
                 .response(clientAnalyzerService.getMostFrequentCancellationMonth())
                 .build();
     }
 
     @GetMapping("/getMostFrequentShiftMonth")
-    public ClientAnalyzerIntegerResponse getMostFrequentShiftMonth() {
-        return ClientAnalyzerIntegerResponse.builder()
+    public ClientAnalyzerStringResponse getMostFrequentShiftMonth() {
+        return ClientAnalyzerStringResponse.builder()
                 .response(clientAnalyzerService.getMostFrequentShiftMonth())
                 .build();
     }
@@ -162,4 +164,10 @@ public class ClientAnalyzerController {
                 .build();
     }
 
+    @GetMapping("/getAllClientsIncoming")
+    public ClientAnalyzerIntegerResponse getAllClientsIncoming(@RequestBody ClientAnalyzerTwoDatesRequest request) {
+        return ClientAnalyzerIntegerResponse.builder()
+                .response(clientAnalyzerService.getAllClientsIncoming(request.getDateFrom(), request.getDateTo()))
+                .build();
+    }
 }

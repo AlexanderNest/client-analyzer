@@ -42,9 +42,13 @@ public interface ClientAnalyzerDao {
 
     String getMostFrequentShiftDay();
 
-    int getMostFrequentCancellationMonth();
+    String getMostFrequentCancellationMonth();
 
-    int getMostFrequentShiftMonth();
+    String getMonthName(int month);
+
+    String getMostFrequentShiftMonth();
 
     double getSuccessfulMeetingsPercentage();
+
+    int getAllClientsIncoming(Date dateFrom, Date dateTo);
 }

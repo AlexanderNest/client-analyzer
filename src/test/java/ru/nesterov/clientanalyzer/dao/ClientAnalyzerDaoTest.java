@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.nesterov.clientanalyzer.models.Client;
 import ru.nesterov.clientanalyzer.models.TypeOfChange;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ClientAnalyzerDaoTest extends BaseClientTest {
     @Autowired
@@ -153,6 +155,72 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
         assertEquals(37, shiftsPercentage);//на самом деле ожидаемое значение 37.5, у h2 проблемы с округлением
     }
 
+    @Test
+    void getMostFrequentCancellationDay() {
+        Client client = createClient();
+        long date = 1709424000000L;
+
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.SHIFTED);
+
+        assertEquals(new java.sql.Date(date + getDaysInMillis(60)).toString(), clientAnalyzerDao.getMostFrequentCancellationDay());
+    }
+
+    @Test
+    void getMostFrequentShiftDay() {
+        Client client = createClient();
+        long date = 1709424000000L;
+
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(70)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(70)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(70)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(30)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(30)), null, true, TypeOfChange.CANCELLED);
+
+        assertEquals(new java.sql.Date(date + getDaysInMillis(70)).toString(), clientAnalyzerDao.getMostFrequentShiftDay());
+    }
+
+    @Test
+    void getMostFrequentShiftMonth() {
+        Client client = createClient();
+        long date = 1709424000000L;
+
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.CANCELLED);
+
+        String mostFrequentShiftMonth = clientAnalyzerDao.getMonthName(new java.sql.Date(date + getDaysInMillis(60)).getMonth() + 1);
+
+        assertEquals(mostFrequentShiftMonth, clientAnalyzerDao.getMostFrequentShiftMonth());
+    }
+
+    @Test
+    void getMostFrequentCancellationMonth() {
+        Client client = createClient();
+        long date = 1709424000000L;
+
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.SHIFTED);
+
+        String mostFrequentCancellationMonth = clientAnalyzerDao.getMonthName(new java.sql.Date(date + getDaysInMillis(60)).getMonth() + 1);
+
+        assertEquals(mostFrequentCancellationMonth, clientAnalyzerDao.getMostFrequentCancellationMonth());}
+
+    void getSuccessfulMeetingsPercentage() {
+        Client client = createClient();
+        long date = 1709424000000L;
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date (date + getDaysInMillis(3)), null, false, TypeOfChange.CANCELLED);
+
+        double successfulMeetingsPercentage = clientAnalyzerDao.getSuccessfulMeetingsPercentage();
+        assertEquals(1/8, successfulMeetingsPercentage);
+    }
+
+    void getAllClientsIncoming() {}
 }
 
    

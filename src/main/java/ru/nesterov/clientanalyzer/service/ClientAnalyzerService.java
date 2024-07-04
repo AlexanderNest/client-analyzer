@@ -82,9 +82,11 @@ public class ClientAnalyzerService {
 
     public String getMostFrequentShiftDay() { return clientAnalyzerDao.getMostFrequentShiftDay(); }
 
-    public int getMostFrequentCancellationMonth() { return clientAnalyzerDao.getMostFrequentCancellationMonth(); }
+    public String getMostFrequentCancellationMonth() { return clientAnalyzerDao.getMostFrequentCancellationMonth(); }
 
-    public int getMostFrequentShiftMonth() { return clientAnalyzerDao.getMostFrequentShiftMonth(); }
+    public String getMostFrequentShiftMonth() { return clientAnalyzerDao.getMostFrequentShiftMonth(); }
 
     public double getSuccessfulMeetingsPercentage() { return clientAnalyzerDao.getSuccessfulMeetingsPercentage(); }
+
+    public int getAllClientsIncoming(Date dateFrom, Date dateTo) { return clientAnalyzerDao.getAllClientsIncoming(dateFrom, dateTo); }
 }
