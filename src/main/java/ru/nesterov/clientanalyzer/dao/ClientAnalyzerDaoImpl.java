@@ -49,11 +49,11 @@ public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
 //                "GROUP BY DATE_FORMAT(sc.date, '%Y-%m-%d') " +
 //                "ORDER BY COUNT(sc.client_id) DESC " +
 //                "LIMIT 1;";
-            String sql = "SELECT FORMATDATETIME(sc.date, 'yyyy-MM-dd') AS cancellation_day " +
+            String sql = "SELECT DATE_FORMAT(sc.date, '%Y-%m-%d') AS cancellation_day " +
                     "FROM schedule_change sc " +
                     "         JOIN type_of_change tc ON sc.type_of_change_id = tc.id " +
                     "WHERE tc.name = ? " +
-                    "GROUP BY FORMATDATETIME(sc.date, 'yyyy-MM-dd') " +
+                    "GROUP BY cancellation_day " +
                     "ORDER BY COUNT(sc.client_id) DESC " +
                     "LIMIT 1";
         return jdbcTemplate.queryForObject(sql, String.class, typeOfChange.name());
@@ -193,18 +193,18 @@ public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
     }
 
     public int getAverageLosses(long clientId, Date dateTo) {
-        String sql = "SELECT c.cost_per_hour * COUNT(sc.id)/ TIMESTAMPDIFF(month, c.date_of_beginning, ?) " +
+        String sql = "SELECT COALESCE ((SELECT c.cost_per_hour * COUNT(sc.id)/ TIMESTAMPDIFF(month, c.date_of_beginning, ?) " +
                 " FROM schedule_change sc left join client c on sc.client_id = c.id " +
                 "                inner join type_of_change toc on sc.type_of_change_id = toc.id " +
-                "                WHERE c.id = ? and toc.name = 'CANCELLED';";
+                "                WHERE c.id = ? and toc.name = 'CANCELLED'), 0);";
         return jdbcTemplate.queryForObject(sql, Integer.class, dateTo, clientId);
     }
 
     public int getActualLosses(long clientId, Date dateFrom, Date dateTo) {
-        String sql = "SELECT c.cost_per_hour*count(sc.id) from client c left join schedule_change sc " +
+        String sql = "SELECT COALESCE((SELECT c.cost_per_hour*count(sc.id) from client c left join schedule_change sc " +
                 "on c.id = sc.client_id " +
                 "inner join type_of_change toc on sc.type_of_change_id = toc.id " +
-                "where toc.name = 'CANCELLED' and c.id = ? and sc.date between ? and ?";
+                "where toc.name = 'CANCELLED' and c.id = ? and sc.date between ? and ?), 0)";
         return jdbcTemplate.queryForObject(sql,
                 Integer.class, clientId, dateFrom, dateTo);
     }
