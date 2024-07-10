@@ -160,12 +160,17 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
         Client client = createClient();
         long date = 1709424000000L;
 
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(320)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(320)), null, true, TypeOfChange.SHIFTED);
 
-        assertEquals(new java.sql.Date(date + getDaysInMillis(60)).toString(), clientAnalyzerDao.getMostFrequentCancellationDay());
+        assertEquals(new java.sql.Date(date - getDaysInMillis(360)).toString(), clientAnalyzerDao.getMostFrequentCancellationDay());
     }
 
     @Test
@@ -202,23 +207,35 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
         Client client = createClient();
         long date = 1709424000000L;
 
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(60)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date + getDaysInMillis(40)), null, true, TypeOfChange.SHIFTED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(360)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(340)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new java.sql.Date(date - getDaysInMillis(340)), null, true, TypeOfChange.SHIFTED);
 
-        String mostFrequentCancellationMonth = clientAnalyzerDao.getMonthName(new java.sql.Date(date + getDaysInMillis(60)).getMonth() + 1);
+        String mostFrequentCancellationMonth = clientAnalyzerDao.getMonthName(new java.sql.Date(date - getDaysInMillis(360)).getMonth() + 1);
 
         assertEquals(mostFrequentCancellationMonth, clientAnalyzerDao.getMostFrequentCancellationMonth());}
 
     @Test
+    void getCountOfSuccessfulMeetingsWithTwoDates() {
+        long date = 1709424000000L;
+        Client client = createClient();
+        Client client1 = createClient();
+
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date (date - getDaysInMillis(999)), null, false, TypeOfChange.CANCELLED);
+
+        int countOfSuccesfulMeetings = clientAnalyzerDao.getCountOfSuccessfulMeetings(new Date(date - getDaysInMillis(1000)), new Date(date - getDaysInMillis(970)));
+        assertEquals(15, countOfSuccesfulMeetings);
+    }
+
+    @Test
     void getSuccessfulMeetingsPercentage() {
         long date = 1709424000000L;
-        Client client = createClient(new Date(date + getDaysInMillis(90)));
+        Client client = createClient(new Date(date - getDaysInMillis(720)));
 
-        scheduleChangeDao.addScheduleChange(client.getId(), new Date (date + getDaysInMillis(3)), null, false, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date (date - getDaysInMillis(717)), null, false, TypeOfChange.CANCELLED);
 
-        double successfulMeetingsPercentage = clientAnalyzerDao.getSuccessfulMeetingsPercentage();
+        double successfulMeetingsPercentage = clientAnalyzerDao.getSuccessfulMeetingsPercentage(new Date(date - getDaysInMillis(720)), new Date(date - getDaysInMillis(690)));
         assertEquals((double)7/8 * 100, successfulMeetingsPercentage);
     }
 
@@ -228,11 +245,11 @@ class ClientAnalyzerDaoTest extends BaseClientTest {
         Client client = createClient();
         Client client1 = createClient();
 
-        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(6)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(5)), null, true, TypeOfChange.CANCELLED);
-        scheduleChangeDao.addScheduleChange(client1.getId(), new Date(date + getDaysInMillis(7)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(151)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client.getId(), new Date(date + getDaysInMillis(155)), null, true, TypeOfChange.CANCELLED);
+        scheduleChangeDao.addScheduleChange(client1.getId(), new Date(date + getDaysInMillis(160)), null, true, TypeOfChange.CANCELLED);
 
-        int allClientsIncoming = clientAnalyzerDao.getAllClientsIncoming(new Date(date), new Date(date + getDaysInMillis(30)));
+        int allClientsIncoming = clientAnalyzerDao.getAllClientsIncoming(new Date(date + getDaysInMillis(150)), new Date(date + getDaysInMillis(180)));
 
         assertEquals(13000, allClientsIncoming);
     }

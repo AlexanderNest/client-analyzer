@@ -25,9 +25,9 @@ public class ClientAnalyzerController {
     }
 
     @GetMapping("/getCountOfSuccessfulMeetings")
-    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetings() {
+    public ClientAnalyzerIntegerResponse getCountOfSuccessfulMeetings(@RequestBody ClientAnalyzerTwoDatesRequest request) {
         return ClientAnalyzerIntegerResponse.builder()
-                .response(clientAnalyzerService.getCountOfSuccessfulMeetings())
+                .response(clientAnalyzerService.getCountOfSuccessfulMeetings(request.getDateFrom(), request.getDateTo()))
                 .build();
     }
 
@@ -158,9 +158,9 @@ public class ClientAnalyzerController {
     }
 
     @GetMapping("/getSuccessfulMeetingsPercentage")
-    public ClientAnalyzerDoubleResponse getSuccessfulMeetingsPercentage() {
+    public ClientAnalyzerDoubleResponse getSuccessfulMeetingsPercentage(@RequestBody ClientAnalyzerTwoDatesRequest request) {
         return ClientAnalyzerDoubleResponse.builder()
-                .response(clientAnalyzerService.getSuccessfulMeetingsPercentage())
+                .response(clientAnalyzerService.getSuccessfulMeetingsPercentage(request.getDateFrom(), request.getDateTo()))
                 .build();
     }
 

@@ -36,9 +36,9 @@ public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
         return jdbcTemplate.queryForObject(sql, Integer.class, dateFrom, dateTo, dateFrom, dateTo);
     }
 
-    public double getSuccessfulMeetingsPercentage() {
-        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, date_of_beginning, current_timestamp) / 7) * count_of_meetings_pr_week) FROM client";
-        return (double) getCountOfSuccessfulMeetings()/jdbcTemplate.queryForObject(plannedMeetings, Integer.class) * 100;
+    public double getSuccessfulMeetingsPercentage(Date dateFrom, Date dateTo) {
+        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, ?, ?) / 7) * count_of_meetings_pr_week) FROM client";
+        return (double) getCountOfSuccessfulMeetings(dateFrom, dateTo)/jdbcTemplate.queryForObject(plannedMeetings, Integer.class, dateFrom, dateTo) * 100;
     }
 
     public String getMostFrequentChangeDay(TypeOfChange typeOfChange) {
@@ -49,7 +49,7 @@ public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
 //                "GROUP BY DATE_FORMAT(sc.date, '%Y-%m-%d') " +
 //                "ORDER BY COUNT(sc.client_id) DESC " +
 //                "LIMIT 1;";
-            String sql = "SELECT DATE_FORMAT(sc.date, '%Y-%m-%d') AS cancellation_day " +
+            String sql = "SELECT sc.date AS cancellation_day " +
                     "FROM schedule_change sc " +
                     "         JOIN type_of_change tc ON sc.type_of_change_id = tc.id " +
                     "WHERE tc.name = ? " +
@@ -92,12 +92,12 @@ public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
         return getMostFrequentChangeMonth(TypeOfChange.SHIFTED);
     }
 
-    public int getCountOfSuccessfulMeetings() {
-        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, date_of_beginning, current_timestamp) / 7) * count_of_meetings_pr_week) FROM client";
-        String cancelledMeetings = "SELECT COUNT(sc.id) FROM schedule_change sc INNER JOIN type_of_change toc ON sc.type_of_change_id = toc.id WHERE toc.name = 'CANCELLED'";
+    public int getCountOfSuccessfulMeetings(Date dateFrom, Date dateTo) {
+        String plannedMeetings = "SELECT SUM(ROUND(TIMESTAMPDIFF(day, ?, ?) / 7) * count_of_meetings_pr_week) FROM client";
+        String cancelledMeetings = "SELECT COUNT(sc.id) FROM schedule_change sc INNER JOIN type_of_change toc ON sc.type_of_change_id = toc.id WHERE toc.name = 'CANCELLED' and sc.date between ? and ?";
         String sql = "SELECT (" + plannedMeetings + ") - (" + cancelledMeetings + ")";
 
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        return jdbcTemplate.queryForObject(sql, Integer.class, dateFrom, dateTo, dateFrom, dateTo);
     }
 
     public int getCountOfSuccessfulMeetings(long clientId) {
