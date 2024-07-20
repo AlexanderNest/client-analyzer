@@ -1,6 +1,8 @@
 package ru.nesterov.clientanalyzer.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,11 +12,13 @@ import ru.nesterov.clientanalyzer.models.TypeOfChange;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Repository
 @RequiredArgsConstructor
 public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
+    private static final Logger logger = LoggerFactory.getLogger(ClientAnalyzerDaoImpl.class);
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -33,6 +37,7 @@ public class ClientAnalyzerDaoImpl implements ClientAnalyzerDao {
                 "                       )," +
                 "                       0)";
         String sql = "SELECT (" + getAllClientsExpectedIncoming + " - " + getAllClientsLosses + ");";
+
         return jdbcTemplate.queryForObject(sql, Integer.class, dateFrom, dateTo, dateFrom, dateTo);
     }
 

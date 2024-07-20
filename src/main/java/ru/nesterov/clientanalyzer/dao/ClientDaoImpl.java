@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class ClientDaoImpl implements ClientDao{
+public class ClientDaoImpl implements ClientDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert insertClient;
 
