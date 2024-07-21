@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 @Repository
 public interface ClientAnalyzerDao {
-    int getCountOfSuccessfulMeetings();
+    int getCountOfSuccessfulMeetings(Date dateFrom, Date dateTo);
 
     int getCountOfSuccessfulMeetings(long clientId);
 
@@ -26,8 +26,6 @@ public interface ClientAnalyzerDao {
 
     double getAverageShiftsPerMonth(long clientId, Date dateFrom, Date dateTo);
 
-//    double getAverageChangesPerMonth(TypeOfChange typeOfChange, long clientId, Date dateFrom, Date dateTo);
-
     int getExpectedIncoming(long clientId, Date dateFrom, Date dateTo);
 
     int getActualIncoming(long clientId, Date dateFrom, Date dateTo);
@@ -39,4 +37,18 @@ public interface ClientAnalyzerDao {
     double getCancellationsPercentage(long clientId, Date dateFrom, Date dateTo);
 
     double getShiftsPercentage(long clientId, Date dateFrom, Date dateTo);
+
+    String getMostFrequentCancellationDay();
+
+    String getMostFrequentShiftDay();
+
+    String getMostFrequentCancellationMonth();
+
+    String getMonthName(int month);
+
+    String getMostFrequentShiftMonth();
+
+    double getSuccessfulMeetingsPercentage(Date dateFrom, Date dateTo);
+
+    int getAllClientsIncoming(Date dateFrom, Date dateTo);
 }

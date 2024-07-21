@@ -1,5 +1,8 @@
 package ru.nesterov.clientanalyzer.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +27,12 @@ public class ClientController {
     }
 
     @GetMapping("/getClientById")
-    public GetClientByIdResponse getClientById(@RequestBody GetClientByIdRequest request) {
+    public GetClientByIdResponse getClientById(@RequestBody @NotNull GetClientByIdRequest request) {
         return clientMapper.mapToGetClientByIdResponse(clientService.getClientById(request.getClientId()));
     }
 
     @PostMapping("/createClient")
-    public CreateClientResponse createClient(@RequestBody CreateClientRequest request) {
+    public CreateClientResponse createClient(@RequestBody @Valid CreateClientRequest request) {
         return clientMapper.mapToCreateClientResponse(clientService.save(clientMapper.mapToClientDto(request)));
    }
 }

@@ -16,8 +16,8 @@ public class ClientAnalyzerService {
         this.clientAnalyzerDao = clientAnalyzerDao;
     }
 
-    public int getCountOfSuccessfulMeetings() {
-        return clientAnalyzerDao.getCountOfSuccessfulMeetings();
+    public int getCountOfSuccessfulMeetings(Date dateFrom, Date dateTo) {
+        return clientAnalyzerDao.getCountOfSuccessfulMeetings(dateFrom, dateTo);
     }
 
     public int getCountOfSuccessfulMeetings(long id) {
@@ -75,4 +75,18 @@ public class ClientAnalyzerService {
     public double getShiftsPercentage(long clientId, Date dateFrom, Date dateTo) {
         return clientAnalyzerDao.getShiftsPercentage(clientId, dateFrom, dateTo);
     }
+
+    public String getMostFrequentCancellationDay() {
+        return clientAnalyzerDao.getMostFrequentCancellationDay();
+    }
+
+    public String getMostFrequentShiftDay() { return clientAnalyzerDao.getMostFrequentShiftDay(); }
+
+    public String getMostFrequentCancellationMonth() { return clientAnalyzerDao.getMostFrequentCancellationMonth(); }
+
+    public String getMostFrequentShiftMonth() { return clientAnalyzerDao.getMostFrequentShiftMonth(); }
+
+    public double getSuccessfulMeetingsPercentage(Date dateFrom, Date dateTo) { return clientAnalyzerDao.getSuccessfulMeetingsPercentage(dateFrom, dateTo); }
+
+    public int getAllClientsIncoming(Date dateFrom, Date dateTo) { return clientAnalyzerDao.getAllClientsIncoming(dateFrom, dateTo); }
 }

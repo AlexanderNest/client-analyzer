@@ -1,14 +1,17 @@
-package ru.nesterov.clientanalyzer.models;
+package ru.nesterov.clientanalyzer.service;
 
+import lombok.Builder;
 import lombok.Data;
+import ru.nesterov.clientanalyzer.models.TypeOfChange;
 
 import java.util.Date;
 
 @Data
-public class ScheduleChange {
+@Builder
+public class ScheduleChangeDto {
     private int id;
     private int clientId;
-    private java.util.Date date;
+    private Date date;
     private Date newDate;
     private boolean planned;
     private TypeOfChange typerOfChange;

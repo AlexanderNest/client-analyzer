@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Builder
-public class ClientAnalyzerDoubleResponse {
-    private Double response;
+@Data
+public class ClientAnalyzerResponse {
+    private Object value;
 }
