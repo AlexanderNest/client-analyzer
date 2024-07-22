@@ -59,7 +59,6 @@ public class ClientDaoImpl implements ClientDao {
             put("date_of_beginning", client.getDateOfBeginning());
         }};
 
-
         int generatedId = insertClient.executeAndReturnKey(values).intValue();
         client.setId(generatedId);
 
