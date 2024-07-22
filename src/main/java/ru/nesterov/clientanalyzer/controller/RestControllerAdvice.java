@@ -12,10 +12,16 @@ public class RestControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BadResponse handle(MethodArgumentNotValidException ex) {
-        String message = "Ошибка по причине: введено недопустимое значение";
+        String message = getMessage(ex.toString());
         BadResponse badResponse = new BadResponse();
         badResponse.setMessage(message);
         return badResponse;
+    }
+
+    private String getMessage(String ex) {
+        String message = ex.substring(ex.indexOf("default message"));
+        message = message.substring(message.indexOf("[") + 1, message.indexOf("]]")) + " " + message.substring(message.lastIndexOf("[") + 1, message.lastIndexOf("]]"));
+        return message;
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
