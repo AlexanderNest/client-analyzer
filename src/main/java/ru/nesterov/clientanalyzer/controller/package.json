@@ -1,0 +1,768 @@
+{
+  "info": {
+    "_postman_id": "fc056722-e1ea-4b4a-aaa7-b2a8ad4a4a62",
+    "name": "client-analyzer",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33953817"
+  },
+  "item": [
+    {
+      "name": "Анализ конкретного клиента",
+      "item": [
+        {
+          "name": "Количество проведенных встреч по конкретному клиенту",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfSuccessfulMeetingsByClientId",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfSuccessfulMeetingsByClientId"
+              ]
+            },
+            "description": "Запрос определяет количество проведенных встреч по конкретному клиенту. В теле запроса нужно передать id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Количество проведенных встреч за определенный период по конкретному клиенту",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 1,\r\n    \"dateFrom\": \"2023-04-04\",\r\n    \"dateTo\": \"2023-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfSuccessfulMeetingsWithDatesByClientId",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfSuccessfulMeetingsWithDatesByClientId"
+              ]
+            },
+            "description": "Запрос определяет количество проведенных встреч по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Количество незапланированных переносов",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 1,\r\n    \"dateFrom\": \"2023-04-04\",\r\n    \"dateTo\": \"2023-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfUnplannedShifts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfUnplannedShifts"
+              ]
+            },
+            "description": "Запрос определяет количество незапланированных переносов по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Количество запланированных переносов",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 4,\r\n    \"dateFrom\": \"2024-04-04\",\r\n    \"dateTo\": \"2024-06-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfPlannedShifts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfPlannedShifts"
+              ]
+            },
+            "description": "Запрос определяет количество запланированных переносов по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Количество запланированных отмен",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 4,\r\n    \"dateFrom\": \"2024-04-04\",\r\n    \"dateTo\": \"2024-06-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfPlannedCancels",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfPlannedCancels"
+              ]
+            },
+            "description": "Запрос определяет количество запланированных отмен по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Количество незапланированных отмен",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 4,\r\n    \"dateFrom\": \"2024-04-04\",\r\n    \"dateTo\": \"2024-06-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfUnplannedCancels",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfUnplannedCancels"
+              ]
+            },
+            "description": "Запрос определяет количество незапланированных отмен по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Среднемесячное количество отмен",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 3,\r\n    \"dateFrom\": \"2022-04-04\",\r\n    \"dateTo\": \"2024-06-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getAverageCancellationsPerMonth",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getAverageCancellationsPerMonth"
+              ]
+            },
+            "description": "Запрос определяет среднемесячное количество отмен по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Вычисление процента отмен",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"dateFrom\": \"2024-03-04\",\r\n    \"dateTo\": \"2024-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCancellationsPercentage",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCancellationsPercentage"
+              ]
+            },
+            "description": "Запрос вычисляет процент отмен по конкретному клиенту за определенный период . В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Поиск клиента по id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/client/getClientById",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "client",
+                "getClientById"
+              ]
+            },
+            "description": "В теле запроса необходимо передать id клиента, информацию о котором нужно получить"
+          },
+          "response": []
+        },
+        {
+          "name": "Вычисление процента переносов",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"dateFrom\": \"2024-03-04\",\r\n    \"dateTo\": \"2024-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getShiftsPercentage",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getShiftsPercentage"
+              ]
+            },
+            "description": "Запрос вычисляет процент переносовпо конкретному клиенту за определенный период . В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Среднемесячное количество переносов",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 3,\r\n    \"dateFrom\": \"2022-04-04\",\r\n    \"dateTo\": \"2024-06-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getAverageShiftsPerMonth",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getAverageShiftsPerMonth"
+              ]
+            },
+            "description": "Запрос определяет среднемесячное количество переносов по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Доход",
+      "item": [
+        {
+          "name": "Ожидаемый доход по клиенту",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"dateFrom\": \"2024-03-04\",\r\n    \"dateTo\": \"2024-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getExpectedIncoming",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getExpectedIncoming"
+              ]
+            },
+            "description": "Запрос определяет ожидаемый доход по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Фактический доход по клиенту",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"dateFrom\": \"2024-03-04\",\r\n    \"dateTo\": \"2024-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getActualIncoming",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getActualIncoming"
+              ]
+            },
+            "description": "Запрос определяет фактический доход по конкретному клиенту за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Подсчет фактических потерь",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"dateFrom\": \"2024-03-04\",\r\n    \"dateTo\": \"2024-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getActualLosses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getActualLosses"
+              ]
+            },
+            "description": "Запрос определяет среднемесячные потери по конкретному клиенту за определенный период . В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Среднемесячные потери",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"dateTo\": \"2024-05-04\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getAverageLosses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getAverageLosses"
+              ]
+            },
+            "description": "Запрос определяет среднемесячные потери по конкретному клиенту от даты начала занятий до указанной даты . В теле запроса нужно передать дату в формате \"yyyy-MM-dd\" и id клиента"
+          },
+          "response": []
+        },
+        {
+          "name": "Доход по всем клиентам",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "Запрос считает доход по всем клиентам. Тело запроса должно быть пустым"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Анализ всех клиентов",
+      "item": [
+        {
+          "name": "Количество проведенных встреч по всем клиентам",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Length",
+                "value": "<calculated when request is sent>",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"dateFrom\": \"2024-03-01\",\r\n    \"dateTo\": \"2024-04-01\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getCountOfSuccessfulMeetings",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getCountOfSuccessfulMeetings"
+              ]
+            },
+            "description": "Запрос определяет количество проведенных встреч по всем клиентам за определенный период. В теле запроса нужно передать две даты в формате \"yyyy-MM-dd\""
+          },
+          "response": []
+        },
+        {
+          "name": "День, в который наиболее часто происходят отмены",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/clientController/getMostFrequentCancellationDay",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getMostFrequentCancellationDay"
+              ]
+            },
+            "description": "Запрос определяет день, в который наиболее часто происходят отмены. Тело запроса должно быть пустым"
+          },
+          "response": []
+        },
+        {
+          "name": "Месяц, в который наиболее часто происходят отмены",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/clientController/getMostFrequentCancellationMonth",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getMostFrequentCancellationMonth"
+              ]
+            },
+            "description": "Запрос определяет месяц, в который наиболее часто происходят отмены. Тело запроса должно быть пустым"
+          },
+          "response": []
+        },
+        {
+          "name": "День, в который наиболее часто происходят переносы",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/clientController/getMostFrequentShiftDay",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getMostFrequentShiftDay"
+              ]
+            },
+            "description": "Запрос определяет день, в который наиболее часто происходят переносы. Тело запроса должно быть пустым"
+          },
+          "response": []
+        },
+        {
+          "name": "Вычисление месяца, в который наиболее часто происходят переносы",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/clientController/getMostFrequentShiftMonth",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getMostFrequentShiftMonth"
+              ]
+            },
+            "description": "Запрос определяет месяц, в который наиболее часто происходят переносы. Тело запроса должно быть пустым"
+          },
+          "response": []
+        },
+        {
+          "name": "Подсчет процента успешных встреч",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/clientController/getSuccessfulMeetingsPercentage",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clientController",
+                "getSuccessfulMeetingsPercentage"
+              ]
+            },
+            "description": "Запрос определяет процент успешно проведенных встреч. Тело запроса должно быть пустым"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Внесение новых данных",
+      "item": [
+        {
+          "name": "Добавление нового клиента",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Deelan\",\r\n    \"costPerHour\": 0,\r\n    \"countOfHoursPerWeek\": 2.0,\r\n    \"countOfMeetingsPerWeek\": 1,\r\n    \"active\": true,\r\n    \"dateOfBeginning\": \"2023-10-10\",\r\n    \"communication\": {\r\n        \"contact\": \"barkbark2020\",\r\n        \"communicationType\": \"TELEGRAM\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/client/createClient",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "client",
+                "createClient"
+              ]
+            },
+            "description": "В теле запроса необходимо передать имя, стоимость услуги в час, количество часов в неделю, количество встреч в неделю, статус(активен/не активен), дату начала занятий в формате \"yyyy-MM-dd\", способ связи: название мессенджера и контакт (номер телефона/логин)"
+          },
+          "response": []
+        },
+        {
+          "name": "Добавить изменение в расписании",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientId\": 2,\r\n    \"typeOfChange\": \"SHIFTED\",\r\n    \"date\": \"2024-07-25\",\r\n    \"newDate\": \"2024-07-26\",\r\n    \"planned\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/scheduleChange/addScheduleChange",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "scheduleChange",
+                "addScheduleChange"
+              ]
+            },
+            "description": "Запрос позволяет добавить информацию об изменении в расписании. В теле запроса передать id клиента, тип изменения (перенос, отмена), дату перенесенного/отмененного занятия; если это перенос - новую дату занятия, и указать ззапланировано ли это изменение (true/false). Даты указать в формате \"yyyy-MM-dd\""
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
