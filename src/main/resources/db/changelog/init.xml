@@ -17,7 +17,6 @@
             );
         </sql>
     </changeSet>
-
     <changeSet id="create-type_of_change" author="Sasha">
         <preConditions>
             <not>
@@ -31,6 +30,11 @@
                 name  varchar(255) NOT NULL
             );
         </sql>
+    </changeSet>
+    <changeSet id="add-index-type-of-change-name" author="Sasha">
+        <createIndex indexName="idx_type_of_change_name" tableName="type_of_change">
+            <column name="name"/>
+        </createIndex>
     </changeSet>
     <changeSet id="create-client" author="Sasha">
         <preConditions>
@@ -68,6 +72,16 @@
                 type_of_change_id int NOT NULL
             );
         </sql>
+    </changeSet>
+    <changeSet id="add-index-schedule-change-type-of-change-id" author="Sasha">
+        <createIndex indexName="idx_type_of_change_id" tableName="schedule_change">
+            <column name="type_of_change_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="add-index-schedule-change-planned" author="Sasha">
+        <createIndex indexName="idx_planned" tableName="schedule_change">
+            <column name="planned"/>
+        </createIndex>
     </changeSet>
     <changeSet id="communication" author="Sasha">
         <preConditions>
